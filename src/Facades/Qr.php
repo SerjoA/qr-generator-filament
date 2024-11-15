@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use SimpleSoftwareIO\QrCode\Generator;
 
@@ -51,7 +52,8 @@ class Qr extends Facade
     ): array {
         return [
             TextInput::make($statePath)
-                ->live(onBlur: true)
+//                ->live(onBlur: true)
+                ->readOnly()
                 ->formatStateUsing(fn ($state) => $state ?? $defaultUrl)
                 ->visible($showUrl),
 
@@ -184,11 +186,12 @@ class Qr extends Facade
                                 ->columns(['sm' => 2])
                                 ->visible(fn (Get $get) => $get('hasEyeColor')),
 
-                            FileUpload::make('logo')
-                                ->live()
-                                ->imageEditor()
-                                ->columnSpanFull()
-                                ->image(),
+//                            FileUpload::make('logo')
+//                                ->live()
+//                                ->disk('public')
+//                                ->imageEditor()
+//                                ->columnSpanFull()
+//                                ->image(),
                         ]),
 
                     Placeholder::make('preview')
@@ -267,8 +270,8 @@ class Qr extends Facade
             reset($options['logo']);
             $logo = current($options['logo']);
 
-            if (filled($logo->getPathName())) {
-                $maker = $maker->merge($logo->getPathName(), .4, true);
+            if (filled($logo)) {
+                $maker = $maker->merge($logo, .4, true);
             }
         }
 
