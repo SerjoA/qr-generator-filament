@@ -51,7 +51,8 @@ class Qr extends Component
                 Hidden::make($getOptionsColumn),
 
                 TextInput::make($getName)
-                    ->live()
+//                    ->live()
+                    ->readOnly()
                     ->default('https://')
                     ->suffixAction(
                         QrOptionsAction::make('qr-code-design')
